@@ -30,7 +30,11 @@
 \begin{itemize}
     \item Games are difficult $\longrightarrow$ Casanova language
     \item Compilers are difficult $\longrightarrow$ Meta Casanova language
-    \item Compilers in two parts: front-end and back-end
+    \item Compilers in two parts
+    \begin{enumerate}
+        \item Front-end: parse and typecheck
+        \item Back-end: generate executables
+    \end{enumerate}
 \end{itemize}
 
 \end{frame}\begin{frame}\frametitle{Contents}
@@ -56,13 +60,15 @@
 
 \end{frame}\begin{frame}[t]\frametitle{Sub-questions}
 \begin{itemize}
-    \item The language question
-    \item The interface question
-    \item The IR question
-    \item The codegen question
-    \item The mangle question
-    \item The validation question
-    \item The debug question
+    \item 7 sub-questions
+    \item Each answer implements parts of the back-end
+    %\item The language question
+    %\item The interface question
+    %\item The IR question
+    %\item The codegen question
+    %\item The mangle question
+    %\item The validation question
+    %\item The debug question
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview}\end{textblock*}
 
@@ -183,7 +189,12 @@
 \end{itemize}
 
 \end{frame}\begin{frame}\frametitle{Defence}
-    Come at me!
+    \begin{center}
+        {%
+        \setlength{\fboxsep}{0pt}%
+        \fbox{\includegraphics[width=0.75\paperwidth]{defence}}%
+        }%
+    \end{center}
 
 \end{frame}
 \end{document}

@@ -2,5 +2,5 @@
 !/.gitignore
 !/*.tex
 !/build/main.pdf
-!/graphics/*
+!/graphics
 !/Makefile

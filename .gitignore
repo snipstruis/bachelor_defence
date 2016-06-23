@@ -1,0 +1,6 @@
+/*
+!/.gitignore
+!/*.tex
+!/build/main.pdf
+!/graphics/*
+!/Makefile

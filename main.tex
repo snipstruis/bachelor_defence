@@ -17,37 +17,36 @@
 \usecolortheme{crane}
 
 \beamertemplatenavigationsymbolsempty
-%\setbeamercolor{footline}{fg=black}
-%\setbeamerfont{footline}{size=\normalsize}
-%\addtobeamertemplate{navigation symbols}{}{%
-%    \usebeamerfont{footline}%
-%    \usebeamercolor[fg]{footline}%
-%    \hspace{1em}%
-%    \insertframenumber
-%}
 
 \title{Design and implementation of the\\Meta Casanova 3 compiler back-end}
 \author{Douwe van Gijn}
 \date{2016-06-29}
 
 \begin{document}
-{%
-%\setbeamertemplate{footline}{}%
-\begin{frame}[noframenumbering]%
-\titlepage%
-\end{frame}%
-}
+\begin{frame}
+\titlepage
 
-\begin{frame}\frametitle{Introduction}
+\end{frame}\begin{frame}\frametitle{Introduction}
 \begin{itemize}
-    \item games
+    \item Games are difficult $\longrightarrow$ Casanova language
+    \item Compilers are difficult $\longrightarrow$ Meta Casanova language
+    \item Compilers in two parts: front-end and back-end
+\end{itemize}
+
+\end{frame}\begin{frame}\frametitle{Contents}
+\begin{itemize}
+    \item Introduction
+    \item Research Question
+    \item Sub-questions
+    \item Results
+    \item Conclusions
+    \item Demo
 \end{itemize}
 
 \end{frame}\begin{frame}\frametitle{Research question}
 \textit{How to implement a transformation from typechecked Meta Casanova from the front-end, to executable code within the timeframe of the internship?}
 
 \end{frame}\begin{frame}\frametitle{Requirements}
-    
 \begin{itemize}
     \item The correctness requirement
     \item The .NET requirement
@@ -68,24 +67,67 @@
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The language question}
+\textit{In what language should the code generator produce its output?}
+\begin{itemize}
+    \item Researched lots of langages
+    \item Two feasable: C\# or F\#
+    \item Implemented both code-models
+    \item C\# won out
+    \begin{itemize}
+        \item more readable
+        \item easier to generate
+        \item faster
+    \end{itemize}
+\end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_language}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The interface question}
+\textit{What should the interface be between the front-end and the back-end?}
+\begin{itemize}
+    \item Contains all inputs of back-end 
+    \item Validator validates invariants
+\end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_interface}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The IR question}
+\textit{What should the Intermediate Representation of the function be?}
+\begin{itemize}
+    \item Instruction set for MC
+    \item Minimal and orthogonal
+    \item Only 6 base instructions
+\end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_ir}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The codegen question}
+\textit{How does the interface map to the output language?}
+\begin{itemize}
+    \item Generates program structure
+    \item Translates IR to C\# instructions
+\end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_codegen}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The mangle question}
+\textit{How to generate names so they comply with the output language?}
+\begin{itemize}
+    \item MC identifiers $\longrightarrow$ C\# identifiers
+    \item No name conflicts
+\end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_mangler}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The validation question}
+\textit{How to validate the code-gen?}
+\begin{itemize}
+    \item Built an interpreter!
+    \item Compare results of interpreter and codegen
+\end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_validation}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The debug question}
+\textit{How to validate the test-programs?}
+\begin{itemize}
+    \item Interactive debugger
+    \item Embedded in executable
+\end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_debugger}\end{textblock*}
 
 \end{frame}\begin{frame}\frametitle{Results}
@@ -105,14 +147,24 @@
     Mono everywhere else
 
 \end{frame}\begin{frame}\frametitle{The performance requirement}
+\begin{itemize}
+    \item Length of list
+    \item Inductive list in MC
+    \item Library list in Python
+    \item 1000 lists of 1 000 000 elements
+\end{itemize}
+
+\end{frame}\begin{frame}\frametitle{The performance requirement}
 \begin{tikzpicture}
 \begin{axis}[
         symbolic x coords={Min, Avg, Max},
         xtick=data,
 	x tick label style={},
-        ylabel=time ($\mu$s),
+        ylabel=time/element ($\mu$s),
 	enlargelimits=0.2,
-        grid=major,
+        ymajorgrids=true,
+        axis x line*=bottom,
+        axis y line*=left,
 	legend style={at={(1.1,0.5)},
 	anchor=west,legend columns=1},
 	ybar,

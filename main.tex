@@ -1,4 +1,4 @@
-\documentclass[xetex,serif]{beamer}
+\documentclass[xetex,serif,aspectratio=169]{beamer}
 %\usepackage[driver=xetex,a4paper,left=35mm,right=35mm,top=30mm,bottom=40mm]{geometry} % propper margins on a4 paper
 %\usepackage{url}
 %\usepackage[hidelinks]{hyperref} % make contents and references clickable in pdf
@@ -13,6 +13,8 @@
 \setmainfont[BoldFont=Source Sans Pro Bold,AutoFakeSlant=0.3]{Source Serif Pro}
 \setmonofont{Source Code Pro}
 
+\setbeamersize{text margin left=0.12\paperwidth,text margin right=0.12\paperwidth} 
+
 \usetheme{default}
 \usecolortheme{crane}
 
@@ -26,17 +28,6 @@
 \begin{frame}
 \titlepage
 
-\end{frame}\begin{frame}\frametitle{Introduction}
-\begin{itemize}
-    \item Games are difficult $\longrightarrow$ Casanova language
-    \item Compilers are difficult $\longrightarrow$ Meta Casanova language
-    \item Compilers in two parts
-    \begin{enumerate}
-        \item Front-end: parse and typecheck
-        \item Back-end: generate executables
-    \end{enumerate}
-\end{itemize}
-
 \end{frame}\begin{frame}\frametitle{Contents}
 \begin{itemize}
     \item Introduction
@@ -45,6 +36,18 @@
     \item Results
     \item Conclusions
     \item Demo
+\end{itemize}
+
+\end{frame}\begin{frame}\frametitle{Introduction}
+\begin{itemize}
+    \item Video games are a multi-billion dollar industry
+    \item Developing Games is difficult $\longrightarrow$ Casanova language
+    \item Compilers are difficult $\longrightarrow$ Meta Casanova language
+    \item Compilers in two parts
+    \begin{enumerate}
+        \item Front-end: parse and typecheck
+        \item Back-end: generate executables
+    \end{enumerate}
 \end{itemize}
 
 \end{frame}\begin{frame}\frametitle{Research question}
@@ -96,7 +99,7 @@
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_interface}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The IR question}
-\textit{What should the Intermediate Representation of the function be?}
+\textit{What should the Intermediate Representation of the functions be?}
 \begin{itemize}
     \item Instruction set for MC
     \item Minimal and orthogonal
@@ -123,7 +126,9 @@
 \end{frame}\begin{frame}[t]\frametitle{The validation question}
 \textit{How to validate the code-gen?}
 \begin{itemize}
+    \item \textbf{Not} with the validator
     \item Built an interpreter!
+    \item Interprets programs instead of compiling them
     \item Compare results of interpreter and codegen
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_validation}\end{textblock*}
@@ -145,12 +150,27 @@
 \end{itemize}
 
 \end{frame}\begin{frame}\frametitle{The correctness \& .NET requirement}
-    Test programs
+\begin{itemize}
+    \item Wrote test programs
+    \item Tested every instruction
+\end{itemize}
+
 
 \end{frame}\begin{frame}\frametitle{The multiplatform requirement}
     Microsoft .NET Compiler for windows
 
     Mono everywhere else
+
+\begin{itemize}
+    \item Linux
+    \item Mac OS X, iOS, tvOS, watchOS
+    \item Sun Solaris
+    \item BSD - OpenBSD, FreeBSD, NetBSD
+    \item Microsoft Windows
+    \item Nintendo Wii
+    \item Sony PlayStation 3
+    \item Sony PlayStation 4
+\end{itemize}
 
 \end{frame}\begin{frame}\frametitle{The performance requirement}
 \begin{itemize}
@@ -192,7 +212,7 @@
     \begin{center}
         {%
         \setlength{\fboxsep}{0pt}%
-        \fbox{\includegraphics[width=0.75\paperwidth]{defence}}%
+        \fbox{\includegraphics[height=0.8\paperheight]{defence}}%
         }%
     \end{center}
 

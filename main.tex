@@ -4,6 +4,7 @@
 %\usepackage[hidelinks]{hyperref} % make contents and references clickable in pdf
 \usepackage[english]{babel}
 \usepackage[english]{isodate} \isodate%
+\usepackage{multicol}
 \usepackage[absolute,overlay]{textpos}
 \usepackage{graphicx} % include images
 \usepackage{pgfplots}
@@ -31,7 +32,7 @@
 \end{frame}\begin{frame}\frametitle{Contents}
 \begin{itemize}
     \item Introduction
-    \item Research Question
+    \item Research question
     \item Sub-questions
     \item Results
     \item Conclusions
@@ -41,12 +42,13 @@
 \end{frame}\begin{frame}\frametitle{Introduction}
 \begin{itemize}
     \item Video game industry
-    \item Developing Games is difficult $\longrightarrow$ Casanova language
+    \item Developing games is difficult $\longrightarrow$ Casanova language
     \item Compilers are difficult $\longrightarrow$ Meta Casanova language
+    \item Casanova features implemented in MC
     \item Compilers in two parts
     \begin{enumerate}
         \item Front-end: parse and typecheck
-        \item Back-end: generate executables
+        \item Back-end: generate executable
     \end{enumerate}
 \end{itemize}
 
@@ -79,7 +81,7 @@
 \textit{In what language should the code generator produce its output?}
 \begin{itemize}
     \item Researched lots of langages
-    \item Two feasable: C\# or F\#
+    \item Two feasable: C\# and F\#
     \item Implemented both code-models
     \item C\# won out
     \begin{itemize}
@@ -94,9 +96,14 @@
 \textit{What should the interface be between the front-end and the back-end?}
 \begin{itemize}
     \item Contains all inputs of back-end 
-    \item Minimalism
-    \item smaller interface $\longrightarrow$ less permutations $\longrightarrow$ less bugs
+    \item Attack surface
+    \item smaller interface $\longrightarrow$ fewer representations $\longrightarrow$ fewer bugs
     \item Validator validates invariants
+    \begin{itemize}
+        \item each identifier is defined once
+        \item each identifier has a type
+        \item no empty rules
+    \end{itemize}
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_interface}\end{textblock*}
 
@@ -107,15 +114,16 @@
     \item Minimal and orthogonal
     \item 6 base instructions 
     \item 6 .NET instructions
+    \item Static Single Assignment (SSA) form
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_ir}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The codegen question}
 \textit{How does the interface map to the output language?}
 \begin{itemize}
-    \item Generate datastructures
-    \item Generate program structure
-    \item Translates IR to C\# instructions
+    \item By generating datastructures
+    \item By generating the program structure
+    \item Translating the IR to linear stream of C\# instructions
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_codegen}\end{textblock*}
 
@@ -123,7 +131,11 @@
 \textit{How to generate names so they comply with the output language?}
 \begin{itemize}
     \item MC identifiers $\longrightarrow$ C\# identifiers
+    \item MC identifiers: nearly all printable ASCII
+    \item C\# identifiers: Only alphanumeric
     \item No name conflicts
+    \item Escaping with underscore
+    \item Embedding type information
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_mangler}\end{textblock*}
 
@@ -131,34 +143,29 @@
 \textit{How to validate the code-gen?}
 \begin{itemize}
     \item \textbf{Not} with the validator
-    \item Built an interpreter!
-    \item Interprets programs instead of compiling them
+    \item With the interpreter
+    \item Slower and simpler
     \item Compare results of interpreter and codegen
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_validation}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The debug question}
-\textit{How to validate the test-programs?}
+\textit{How to validate the test programs?}
 \begin{itemize}
     \item Interactive debugger
     \item Embedded in executable
+    \item Program view with breakpoints
+    \item Watch window
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_debugger}\end{textblock*}
-
-\end{frame}\begin{frame}\frametitle{Results}
-\begin{itemize}
-    \item The correctness requirement
-    \item The .NET requirement
-    \item The multiplatform requirement
-    \item The performance requirement
-\end{itemize}
 
 \end{frame}\begin{frame}\frametitle{The correctness \& .NET requirement}
 \begin{itemize}
     \item Wrote test programs
     \item Tested every instruction
+    \item Compared with interpreter
+    \item Validated with debugger
 \end{itemize}
-
 
 \end{frame}\begin{frame}\frametitle{The multiplatform requirement}
     Microsoft .NET Compiler for windows
@@ -178,6 +185,7 @@
 
 \end{frame}\begin{frame}\frametitle{The performance requirement}
 \begin{itemize}
+    \item Benchmark
     \item Length of list
     \item Inductive list in MC
     \item Library list in Python
@@ -209,8 +217,15 @@
 \begin{itemize}
     \item All requirements are met
     \item Working back-end within the allocated time
-    \item Demo time!
+    \item Documented in thesis
+    \item Helps the research team
+    \item Video game industry
 \end{itemize}
+
+\end{frame}\begin{frame}%\frametitle{Demo time!}
+    \begin{center}
+        {\Large Demo time!}
+    \end{center}
 
 \end{frame}\begin{frame}\frametitle{Defence}
     \begin{center}
@@ -221,4 +236,31 @@
     \end{center}
 
 \end{frame}
+
+%\begin{frame}
+%\end{frame}\begin{frame}\frametitle{Bonus: IR instructions}
+%\begin{multicols}{2}
+%Base instructions\\
+%\begin{itemize}
+%    \item Literal
+%    \item Conditional
+%    \item Deconstructor
+%    \item Closure
+%    \item Application
+%    \item Call
+%\end{itemize}
+%\columnbreak
+%.NET instructions\\
+%\begin{itemize}
+%    \item Call
+%    \item Static Call
+%    \item Get
+%    \item Static Get
+%    \item Set
+%    \item Static Set
+%\end{itemize}
+%\end{multicols}
+%
+%\end{frame}\begin{frame}\frametitle{Bonus: Program structure}
+%\end{frame}
 \end{document}

@@ -40,7 +40,7 @@
 
 \end{frame}\begin{frame}\frametitle{Introduction}
 \begin{itemize}
-    \item Video games are a multi-billion dollar industry
+    \item Video game industry
     \item Developing Games is difficult $\longrightarrow$ Casanova language
     \item Compilers are difficult $\longrightarrow$ Meta Casanova language
     \item Compilers in two parts
@@ -94,6 +94,8 @@
 \textit{What should the interface be between the front-end and the back-end?}
 \begin{itemize}
     \item Contains all inputs of back-end 
+    \item Minimalism
+    \item smaller interface $\longrightarrow$ less permutations $\longrightarrow$ less bugs
     \item Validator validates invariants
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_interface}\end{textblock*}
@@ -103,14 +105,16 @@
 \begin{itemize}
     \item Instruction set for MC
     \item Minimal and orthogonal
-    \item Only 6 base instructions
+    \item 6 base instructions 
+    \item 6 .NET instructions
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_ir}\end{textblock*}
 
 \end{frame}\begin{frame}[t]\frametitle{The codegen question}
 \textit{How does the interface map to the output language?}
 \begin{itemize}
-    \item Generates program structure
+    \item Generate datastructures
+    \item Generate program structure
     \item Translates IR to C\# instructions
 \end{itemize}
 \begin{textblock*}{0.75\paperwidth}(0.125\paperwidth,6cm)\includegraphics[width=0.75\paperwidth]{overview_codegen}\end{textblock*}

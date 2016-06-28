@@ -1,0 +1,245 @@
+Welcome 
+I am douwe
+and this is the defence of my thesis:
+"design and implementation of the meta casanova 3 compiler back-end"
+
+
+CONTENTS
+We'll first start with a short introduction, 
+followed by the research question
+We'll then go over the sub-questions,
+and then check the results to see if we've answered the research question.
+This is followed by a conclusion and a live demonstration at the end
+
+
+INTRODUCTION
+The video game industry is huge, 
+a lot of programmers are building games every day.
+
+But developing games is very difficult.
+For this purpose, the Casanova language was created.
+But during the development of Casanova, the compiler became unmaintainable.
+This happened because of a lack of high level abstractions.
+
+So to make developing compilers easier, Meta Casanova was created.
+But it turned out MC had such strong abstractions,
+that it was able to implement the innovations designed for Casanova.
+This thesis is about the compiler for Meta Casanova
+
+Compilers are generally split in two parts: a front-end and a back-end
+The front-end parses and typechecks the language,
+and the back-end is responsible for generating the executable
+The thesis is about the back-end 
+
+Specifically,
+
+
+RESEARCH QUESTION
+the research question is:
+"How to implement a transformation from typechecked Meta Casanova from the front-end,
+ to executable code within the typeframe of the internship?"
+
+where the transformation must satisfy the following 4 requirements:
+
+
+REQUIREMENTS
+
+The Correctness requirement
+"The back-end must always generate the correct code"
+This is the most important requirement,
+because if the compiler contains a bug, 
+all generated programs are suspect,
+and the compiler is worthless.
+
+The next requirement is the .NET requirement
+"The generated code must be able to inter-operate with .NET"
+This is because the huge ammount of libraries
+and because of the popular Unity game-engine.
+
+Next is the multiplatform requirement
+"The generated code must run on all the platforms .NET runs on"
+This is important as games have to be playable on consoles as well as on desktop.
+
+And finally the performance requirement
+"The generated code must be faster than python"
+This is because games have to be fast.
+
+Now that we have seen the research question and the requirements,
+We can look at the sub-questions
+
+
+SUB-QUESTIONS
+To answer the main research question, 
+the research question was split in 7 sub-questions.
+Each answer implements a part of the back-end.
+
+We'll go though each sub-question and answer them
+
+Below you can see a diagram of the dataflow through the different parts of the back-end
+It starts on the left with the interface 
+and flows to the right through the code generator and to the executable.
+
+
+THE LANGUAGE QUESTION
+The first sub-question is:
+"In what language should the code generator produce its output?"
+
+I researched a lot of languages and interop-methods as seen in the thesis
+And eventually two languages were feasable: C# and F#
+
+I implemented both code-models and C# won out.
+It was more readable,
+easier to generate 
+and faster than F#.
+
+So after developing a code-model, I started to design the interface
+
+
+THE INTERFACE QUESTION
+"What should the inteface be between the front-end and the back-end?"
+The interface contains all the inputs of the back-end
+and is effectively the attack surface.
+
+I made the interface as small as possible
+There should be the least possible representations of the same program.
+Because a smaller interface means fewer representations which leads to fewer bugs
+
+In order to validate the interface, I also built a validator.
+The validator checks if each identifier is defined exactly once.
+It also checks if each identifier has a type,
+And finally it makes sure no rules are empty.
+
+Part of the interface is the Intermediate Representation.
+
+
+THE IR QUESTION
+"What should the Intermediate Representation of the funcitions be?"
+
+The intermediate representation is the instruction set for MC.
+All executable code in MC consist of these instructions.
+
+They are minimal and orthogonal.
+Again, to make sure there are the least possible representations of the same program.
+
+There are only 6 base instructions and 6 .NET instructions
+Compare this to hundreds of instructions in other IRs like LLVM and CIL.
+
+The instructions are also in Static Single Assignment(SSA) form.
+This has the benefit that all the dependencies are explicitly passed as variables.
+This means the IR can easily be manipulated by the code-gen.
+
+Speaking of which...
+
+
+THE CODEGEN QUESTION
+"How does the interface map to the output language?"
+The codegen does this by first generating the datastructures,
+It then generates the program structure
+And then it translates every instruction to a linear stream of C# instructions.
+
+The benefit of having a linear stream of instructions instead of a tree of instructions,
+is that is it much easier for the codegen to inject code between the instructions.
+This is a great advantage when injecting breakpoints for the debugger.
+
+Part of the code generator is the mangler
+
+
+THE MANGLE QUESTION
+"How to generate names so they comply with the output language?"
+The mangler is responsible for transforming the MC identifiers to C# identifiers.
+In order to be as expressive as possible, MC allows for a lot more identifiers than C#.
+
+To generate all the identifiers without name conflicts,
+the mangler escapes the invalid C# characters with an underscore followed by a code word.
+
+Now that we have seen the codegen and the mangler, we can ask:
+
+
+THE VALIDATION QUESTION
+"How to validate the code-gen?"
+It's not with the validator. 
+remember that the validator only validates the interface and the IR,
+and we want to validate the code generator and the mangler.
+
+To answer this question, I built an interpreter.
+Interpreters are slower but much simpler to make than a code generator.
+Because they are simple to make, there are very few places for bugs to hide.
+
+So when I compare the results of the interpreter and the generated code, 
+they must be the same.
+
+If they are not the same, there could be a bug in either the simple interpreter, or, more likely, in the code-generator.
+
+If all the tests the results are the same,
+then I know that the code-generator is correct.
+
+Having validated the code-gen leads us to the following question:
+
+
+THE DEBUG QUESTION
+"How to validate the test programs?"
+I built an interactive debugger that the code-generator can embed into the executable.
+
+The debugger features a program tree with toggleable breakpoints 
+and a watch window to inspect the values in the program.
+
+So, now that we have seen the sub-questions,
+Let's see if we pass the requirements
+
+
+THE CORRECTNESS & .NET REQUIREMENT
+
+I wrote test programs to exhaustively test every instruction,
+and compared it with the interpreter, and validated it with the debugger.
+
+The programs generated correctly, so these requirements are met.
+
+
+THE MULTIPLATFORM REQUIREMENT
+
+The generated code works in Windows with both mono and the Microsoft compiler.
+and everywhere else in mono.
+
+Mono supports all these platforms, and has a write-once-run-everywhere guarantee.
+I have tested it on the platforms that I have access to, and this seems to be true.
+
+so this requirement has also been met.
+
+
+THE PERFORMANCE REQUIREMENT
+The performance requirement is tested with a benchmark.
+The benchmark will compute the length of a list.
+The list in MC is a simple inductive list
+and the list in Python is the standard library list.
+The benchmark will compute the length of a list of one million elements a thousand times.
+
+These are the results:
+
+
+THE PERFORMANCE REQUIREMENT
+On the y-axis is the time it took to count an element in micro-seconds.
+and on the x-axis are the minimum, average and maximum time mesurements.
+
+As you can see in catagory, MC takes less time to count the elements than Python.
+In other words, MC is faster than Python,
+meaning that the final requirement has also been met.
+
+
+CONCLUSION
+So, in conclusion:
+We've seen that all requirements have been met
+And I have built a working back-end within the allocated time
+I have documented the back-end in detail in the thesis.
+
+This helps the research team develop Meta Casanova,
+Which in turn helps the video game industry.
+
+And with that, 
+
+
+DEMO TIME
+It's time for a demo
+
+~~~~~~~~~
+
+So, are there any questions?
